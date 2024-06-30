@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>User Profiles App</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f0f0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .container {
+      width: 600px;
+      padding: 20px;
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    .search-input {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      margin-bottom: 20px;
+    }
+    .user-profile {
+      background-color: #f9f9f9;
+      padding: 15px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      margin-bottom: 10px;
+    }
+    .user-profile h2 {
+      margin-bottom: 5px;
+    }
+    .user-profile p {
+      margin: 0;
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script src="https://www.unpkg.com/react@18.2.0/umd/react.development.js"></script>
+  <script src="https://www.unpkg.com/react-dom@18.2.0/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <script type="text/babel">
+    const { useState } = React;
+
+    const UserProfile = ({ name, email, phone }) => (
+      <div className="user-profile">
+        <h2>{name}</h2>
+        <p>Email: {email}</p>
+        <p>Phone: {phone}</p>
+      </div>
+    );
+
+    const App = () => {
+      const usersData = [
+        { id: 1, name: "John Doe", email: "john.doe@example.com", phone: "123-456-7890" },
+        { id: 2, name: "Jane Smith", email: "jane.smith@example.com", phone: "987-654-3210" },
+        { id: 3, name: "Michael Johnson", email: "michael.johnson@example.com", phone: "555-123-4567" },
+        { id: 4, name: "Emily Brown", email: "emily.brown@example.com", phone: "777-888-9999" }
+      ];
+
+      const [searchQuery, setSearchQuery] = useState("");
+
+      const handleSearchInputChange = (event) => {
+        setSearchQuery(event.target.value);
+      };
+
+      const filteredUsers = usersData.filter(user =>
+        user.name.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+
+      return (
+        <div className="container">
+          <h1>User Profiles</h1>
+          <input
+            type="text"
+            className="search-input"
+            placeholder="Search by name..."
+            value={searchQuery}
+            onChange={handleSearchInputChange}
+          />
+          {filteredUsers.map(user => (
+            <UserProfile
+              key={user.id}
+              name={user.name}
+              email={user.email}
+              phone={user.phone}
+            />
+          ))}
+        </div>
+      );
+    };
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<App />)
+  </script>
+</body>
+</html>
